@@ -42,10 +42,6 @@ const Withdraw = () => {
   }, [success]);
 
   const handleWithdrawal = () => {
-    if (!selectedAccountId) {
-      return;
-    }
-
     const payload: ATMInput = {
       amount: value,
       message: t('Withdrew {{amount}} from account.', { amount: formatMoney(value, general) }),

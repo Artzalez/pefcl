@@ -10,7 +10,7 @@ import { Route } from 'react-router-dom';
 import './App.css';
 import { useConfig } from './hooks/useConfig';
 import theme from './utils/theme';
-import AccountsView from './views/Accounts/AccountsView';
+import Accounts from './views/accounts/Accounts';
 import Dashboard from './views/dashboard/Dashboard';
 import Invoices from './views/Invoices/Invoices';
 import ATM from './views/ATM/ATM';
@@ -18,14 +18,10 @@ import { BroadcastsWrapper } from '@hooks/useBroadcasts';
 import Transfer from './views/transfer/Transfer';
 import Transactions from './views/transactions/Transactions';
 import Devbar from '@components/DebugBar';
-import { GeneralEvents, NUIEvents, UserEvents } from '@typings/Events';
+import { NUIEvents, UserEvents } from '@typings/Events';
 import Deposit from './views/Deposit/Deposit';
 import { fetchNui } from '@utils/fetchNui';
 import Withdraw from './views/Withdraw/Withdraw';
-import { useSetAtom } from 'jotai';
-import { accountsAtom, rawAccountAtom } from '@data/accounts';
-import { transactionBaseAtom, transactionInitialState } from '@data/transactions';
-import CardsView from './views/Cards/CardsView';
 
 dayjs.extend(updateLocale);
 
@@ -50,30 +46,13 @@ const Content = styled.div`
 
 const App: React.FC = () => {
   const config = useConfig();
-  const setRawAccounts = useSetAtom(rawAccountAtom);
-  const setAccounts = useSetAtom(accountsAtom);
-  const setTransactions = useSetAtom(transactionBaseAtom);
   const [hasLoaded, setHasLoaded] = useState(process.env.NODE_ENV === 'development');
-
   useNuiEvent({
     event: UserEvents.Loaded,
-    callback: () => {
-      console.debug('Loaded user.');
-      setHasLoaded(true);
-    },
+    callback: () => setHasLoaded(true),
   });
 
-  useNuiEvent({
-    event: UserEvents.Unloaded,
-    callback: () => {
-      console.debug('Unloaded user.');
-      fetchNui(GeneralEvents.CloseUI);
-      setHasLoaded(false);
-      setRawAccounts([]);
-      setAccounts([]);
-      setTransactions(transactionInitialState);
-    },
-  });
+  useNuiEvent({ event: UserEvents.Unloaded, callback: () => setHasLoaded(false) });
 
   useEffect(() => {
     fetchNui(NUIEvents.Loaded);
@@ -93,7 +72,7 @@ const App: React.FC = () => {
   });
 
   const { i18n } = useTranslation();
-  useExitListener(isVisible);
+  useExitListener();
 
   useEffect(() => {
     i18n.changeLanguage(config?.general?.language).catch((e) => console.error(e));
@@ -116,13 +95,12 @@ const App: React.FC = () => {
           <Container>
             <Content>
               <Route path="/" exact component={Dashboard} />
-              <Route path="/accounts" component={AccountsView} />
+              <Route path="/accounts" component={Accounts} />
               <Route path="/transactions" component={Transactions} />
               <Route path="/invoices" component={Invoices} />
               <Route path="/transfer" component={Transfer} />
               <Route path="/deposit" component={Deposit} />
               <Route path="/withdraw" component={Withdraw} />
-              <Route path="/cards" component={CardsView} />
             </Content>
           </Container>
         )}

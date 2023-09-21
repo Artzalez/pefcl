@@ -14,7 +14,6 @@ const Container = styled.div`
 `;
 
 const Content = styled(motion.div)`
-  position: relative;
   padding: 2rem;
   flex: 1;
   height: 100%;

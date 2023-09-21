@@ -7,8 +7,7 @@
   "frameworkIntegration": {
     "enabled": false,
     "resource": "your-resource",
-    "syncInitialBankBalance": true,
-    "isCardsEnabled": false
+    "syncInitialBankBalance": true
   },
   "database": {
     "profileQueries": true
@@ -24,10 +23,6 @@
     "otherAccountStartBalance": 500,
     "clearingNumber": 920,
     "maximumNumberOfAccounts": 3
-  },
-  "cards": {
-    "cost": 4500,
-    "maxCardsPerAccount": 2
   },
   "atms": {
     "distance": 5.0,

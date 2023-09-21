@@ -7,7 +7,7 @@ export const mockedResourceName = 'pefcl';
 
 // TODO: Move this into package
 const convars = {
-  mysql_connection_string: 'mysql://root:root@127.0.0.1/QBCoreFramework_E05901?charset=utf8mb4',
+  mysql_connection_string: 'mysql://root:bruv@localhost/dev',
 };
 
 const players: any = {
@@ -25,10 +25,6 @@ if (isMocking) {
   const baseDir = path.resolve(__dirname + '/../../');
   const ServerEmitter = new EventEmitter().setMaxListeners(25);
   const NetEmitter = new EventEmitter().setMaxListeners(25);
-
-  global.RegisterCommand = (cmd: string) => {
-    console.log('Registered command', cmd);
-  };
 
   global.LoadResourceFile = (_resourceName: string, fileName: string) => {
     const file = readFileSync(`${baseDir}/${fileName}`, 'utf-8');
@@ -68,27 +64,15 @@ if (isMocking) {
     'your-resource': {
       addCash: () => {
         console.log('global.server.ts: Adding cash ..');
-        throw new Error('adding cash');
+        throw new Error('no funds');
       },
       getCash: () => {
         console.log('global.server.ts: Getting cash ..');
         return 2500;
       },
-      getBank: () => {
-        console.log('global.server.ts: Getting bank ..');
-        return 9000000;
-      },
       removeCash: () => {
         console.log('global.server.ts: Removing cash ..');
-        throw new Error('could not remove cash');
-      },
-      giveCard: () => {
-        console.log('global.server.ts: Giving card ..');
-        throw new Error('giving card');
-      },
-      getCards: () => {
-        console.log('global.server.ts: Getting cards ..');
-        return [];
+        throw new Error('no funds');
       },
     },
   });

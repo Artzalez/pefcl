@@ -34,7 +34,6 @@ export interface ResourceConfig {
     enabled: boolean;
     resource: string;
     syncInitialBankBalance: boolean;
-    isCardsEnabled: boolean;
   };
   database: {
     profileQueries: boolean;
@@ -48,10 +47,6 @@ export interface ResourceConfig {
     otherAccountStartBalance: number;
     clearingNumber: string | number;
     maximumNumberOfAccounts: number;
-  };
-  cards: {
-    cost: number;
-    maxCardsPerAccount: number;
   };
   cash: {
     startAmount: number;

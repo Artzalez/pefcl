@@ -4,7 +4,6 @@ import { AccountModel } from './account/account.model';
 import { TransactionModel } from './transaction/transaction.model';
 import './invoice/invoice.model';
 import { SharedAccountModel } from './accountShared/sharedAccount.model';
-import { CardModel } from './card/card.model';
 
 /* This is so annoying. Next time choose something with TS support. */
 declare module './accountShared/sharedAccount.model' {
@@ -20,12 +19,6 @@ declare module './transaction/transaction.model' {
   }
 }
 
-declare module './card/card.model' {
-  interface CardModel {
-    setAccount(id?: number): Promise<void>;
-  }
-}
-
 TransactionModel.belongsTo(AccountModel, {
   as: 'toAccount',
 });
@@ -35,10 +28,6 @@ TransactionModel.belongsTo(AccountModel, {
 });
 
 SharedAccountModel.belongsTo(AccountModel, {
-  as: 'account',
-});
-
-CardModel.belongsTo(AccountModel, {
   as: 'account',
 });
 

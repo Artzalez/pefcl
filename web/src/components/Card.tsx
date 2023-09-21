@@ -12,12 +12,7 @@ import { IconButton, Skeleton, Stack } from '@mui/material';
 import { ContentCopyRounded } from '@mui/icons-material';
 import copy from 'copy-to-clipboard';
 
-interface ContainerProps {
-  isDisabled: boolean;
-  accountType: AccountType;
-  selected: boolean;
-}
-const Container = styled.div<ContainerProps>`
+const Container = styled.div<{ accountType: AccountType; selected: boolean }>`
   user-select: none;
   width: 100%;
   padding: 1rem;
@@ -45,14 +40,8 @@ const Container = styled.div<ContainerProps>`
   ${({ selected }) =>
     selected &&
     `
-    border: 2px solid ${theme.palette.primary.light};
+    border: 2px solid ${theme.palette.background.light8};
   `};
-
-  ${({ isDisabled }) =>
-    isDisabled &&
-    `
-    opacity: 0.5;
-  `}
 `;
 
 const Row = styled.div`
@@ -88,23 +77,15 @@ const DefaultText = styled(Heading6)`
 type AccountCardProps = {
   account: Account;
   selected?: boolean;
-  withCopy?: boolean;
-  isDisabled?: boolean;
 };
 
-export const AccountCard = ({
-  account,
-  selected = false,
-  withCopy = false,
-  isDisabled = false,
-  ...props
-}: AccountCardProps) => {
+export const AccountCard = ({ account, selected = false, ...props }: AccountCardProps) => {
   const { type, id, balance, isDefault, accountName, number } = account;
   const { t } = useTranslation();
   const config = useConfig();
 
   return (
-    <Container {...props} key={id} accountType={type} selected={selected} isDisabled={isDisabled}>
+    <Container {...props} key={id} accountType={type} selected={selected}>
       <Row>
         <Heading3>{formatMoney(balance, config.general)}</Heading3>
         <Type>
@@ -115,16 +96,14 @@ export const AccountCard = ({
 
       <Stack direction="row" alignItems="center">
         <Heading5>{number}</Heading5>
-        {withCopy && (
-          <IconButton
-            onClick={() => copy(number)}
-            size="small"
-            color="inherit"
-            style={{ opacity: '0.45', marginTop: 0, marginLeft: '0.25rem' }}
-          >
-            <ContentCopyRounded color="inherit" fontSize="small" />
-          </IconButton>
-        )}
+        <IconButton
+          onClick={() => copy(number)}
+          size="small"
+          color="inherit"
+          style={{ opacity: '0.45', marginTop: 0, marginLeft: '0.25rem' }}
+        >
+          <ContentCopyRounded color="inherit" fontSize="small" />
+        </IconButton>
       </Stack>
 
       <RowEnd>
@@ -132,6 +111,8 @@ export const AccountCard = ({
           <Heading6>{t('Account name')}</Heading6>
           <BodyText>{accountName}</BodyText>
         </Col>
+
+        <StyledIcon />
       </RowEnd>
     </Container>
   );
@@ -139,7 +120,7 @@ export const AccountCard = ({
 
 export const LoadingAccountCard = () => {
   return (
-    <Container accountType={AccountType.Personal} selected={false} isDisabled={false}>
+    <Container accountType={AccountType.Personal} selected={false}>
       <Row>
         <Heading3>
           <Skeleton variant="text" width={120} />
